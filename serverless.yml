@@ -1,0 +1,31 @@
+service:
+  name: sqs-demo
+
+custom:
+  webpack:
+    webpackConfig: ./webpack.config.js
+    includeModules: true
+
+plugins:
+  - serverless-webpack
+
+provider:
+  name: aws
+  runtime: nodejs12.x
+  region: ap-southeast-2
+  apiGateway:
+    minimumCompressionSize: 1024 # Enable gzip compression for responses > 1 KB
+  environment:
+    AWS_NODEJS_CONNECTION_REUSE_ENABLED: 1
+  # SQS Permission given
+  iamManagedPolicies:
+  - 'arn:aws:iam::aws:policy/AmazonSQSFullAccess'
+
+functions:
+  funtionOne:
+    handler: handler.funtionOne
+  funtionTwo:
+    handler: handler.funtionTwo
+    events:
+      - sqs: <your sqs arn>
+
